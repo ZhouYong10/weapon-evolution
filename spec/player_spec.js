@@ -59,8 +59,14 @@ describe("weapon-evolution", function(){
         it('soldier fight ordinary being.',function() {
             expect(soldierZhangsan.fight(ordinaryBeingLisi)).toBe('战士张三用优质木棒攻击了普通人李四,李四受到了7点伤害,李四剩余生命：3\n');
         });
+
         it('ordinary being fight soldier.',function() {
             expect(ordinaryBeingLisi.fight(soldierZhangsan)).toBe('普通人李四攻击了战士张三,张三受到了1点伤害,张三剩余生命：9\n');
+        });
+
+        it('ordinary being fight ordinary being.',function() {
+            var ordinaryBeingZhangsan = new OrdinaryBeing(new People('张三', 10, 5),'普通人');
+            expect(ordinaryBeingZhangsan.fight(ordinaryBeingLisi)).toBe('普通人张三攻击了普通人李四,李四受到了5点伤害,李四剩余生命：5\n');
         })
     });
 
