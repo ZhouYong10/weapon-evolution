@@ -7,16 +7,40 @@ var fight_ctrl = require('../controllers/fight_ctrl');
 
 describe("weapon-evolution", function(){
     describe('people fight each other.',function() {
+
        it('first fight people die.',function() {
            var zhangsan = new People('张三', 10, 3);
+           zhangsan.fight = function(people) {
+               people.blood -= this.hurt;
+               return '张三出击\n';
+           };
            var lisi = new People('李四', 10, 5);
-           expect(fight_ctrl.fight_each_other(zhangsan, lisi)).toBe('张三被打败了.');
+           lisi.fight = function(people) {
+               people.blood -= this.hurt;
+               return '李四出击\n';
+           };
+           expect(fight_ctrl.fight_each_other(zhangsan, lisi)).toBe('张三出击\n'+
+                                                                       '李四出击\n'+
+                                                                       '张三出击\n'+
+                                                                       '李四出击\n'+
+                                                                       '张三被打败了.');
        });
 
         it('second fight people die.', function () {
-            var zhangsan = new People('张三', 10, 5);
-            var lisi = new People('李四', 10, 3);
-            expect(fight_ctrl.fight_each_other(zhangsan, lisi)).toBe('李四被打败了.');
+            var zhangsan = new People('张三', 10, 6);
+            zhangsan.fight = function(people) {
+                people.blood -= this.hurt;
+                return '张三出击\n';
+            };
+            var lisi = new People('李四', 10, 5);
+            lisi.fight = function(people) {
+                people.blood -= this.hurt;
+                return '李四出击\n';
+            };
+            expect(fight_ctrl.fight_each_other(zhangsan, lisi)).toBe('张三出击\n'+
+                                                                        '李四出击\n'+
+                                                                        '张三出击\n'+
+                                                                        '李四被打败了.');
         });
     });
 
@@ -24,7 +48,7 @@ describe("weapon-evolution", function(){
         it('the blood should be reduce of people who was fighted.',function() {
             var zhangsan = new People('张三', 10, 3);
             var lisi = new People('李四', 10, 6);
-            zhangsan.fight(lisi);
+            expect(zhangsan.fight(lisi)).toBe('张三攻击了李四,李四受到了3点伤害,李四剩余生命：7\n');
             expect(lisi.blood).toBe(7);
         })
     });

@@ -3,13 +3,18 @@
  */
 module.exports = {
     fight_each_other: function(player1,player2) {
+        var message = '';
         var result = this.all_alive(player1, player2);
         while(result == 'allAlive') {
-            player1.fight(player2);
-            player2.fight(player1);
+            message += player1.fight(player2);
             result = this.all_alive(player1, player2);
+            if(result == 'allAlive') {
+                message += player2.fight(player1);
+                result = this.all_alive(player1, player2);
+            }
         }
-        return result;
+        message += result;
+        return message;
     },
     all_alive: function() {
         for(var key in arguments) {

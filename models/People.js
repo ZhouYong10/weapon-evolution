@@ -10,6 +10,9 @@ function People(name,blood,hurt) {
 People.prototype = {
     fight: function(people) {
         people.blood -= this.hurt;
+        return this.name + '攻击了' + people.name + ',' +
+                people.name + '受到了' + this.hurt + '点伤害,' +
+                people.name + '剩余生命：' + people.blood + '\n';
     },
     is_alive: function() {
         if(this.blood > 0) {
