@@ -13,40 +13,44 @@ describe("weapon-evolution", function(){
     describe('people fight each other.',function() {
 
        it('first fight people die.',function() {
-           var zhangsan = new People('张三', 10, 3);
-           zhangsan.fight = function(people) {
-               people.blood -= this.hurt;
+           var soldierZhangsan = new Soldier(new People('张三', 10, 4),'战士',
+               new Weapon('优质木棒',3),
+               new Defense('护盾',2));
+           soldierZhangsan.fight = function(role) {
+               role.reduce_blood(this.hurt());
                return '张三出击\n';
            };
-           var lisi = new People('李四', 10, 5);
-           lisi.fight = function(people) {
-               people.blood -= this.hurt;
+           var ordinaryBeingLisi = new OrdinaryBeing(new People('李四', 10, 3),'普通人');
+           ordinaryBeingLisi.fight = function(role) {
+               role.reduce_blood(this.hurt());
                return '李四出击\n';
            };
-           expect(fight_ctrl.fight_each_other(zhangsan, lisi))
+           expect(fight_ctrl.fight_each_other(soldierZhangsan, ordinaryBeingLisi))
                .toBe('张三出击\n'+
                        '李四出击\n'+
                        '张三出击\n'+
-                       '李四出击\n'+
-                       '张三被打败了.');
+                       '普通人李四被打败了.');
        });
 
         it('second fight people die.', function () {
-            var zhangsan = new People('张三', 10, 6);
-            zhangsan.fight = function(people) {
-                people.blood -= this.hurt;
+            var soldierZhangsan = new Soldier(new People('张三', 10, 4), '战士',
+                new Weapon('优质木棒', 3),
+                new Defense('护盾', 2));
+            soldierZhangsan.fight = function (role) {
+                role.reduce_blood(this.hurt());
                 return '张三出击\n';
             };
-            var lisi = new People('李四', 10, 5);
-            lisi.fight = function(people) {
-                people.blood -= this.hurt;
+            var ordinaryBeingLisi = new OrdinaryBeing(new People('李四', 20, 10), '普通人');
+            ordinaryBeingLisi.fight = function (role) {
+                role.reduce_blood(this.hurt());
                 return '李四出击\n';
             };
-            expect(fight_ctrl.fight_each_other(zhangsan, lisi))
-                .toBe('张三出击\n'+
-                        '李四出击\n'+
-                        '张三出击\n'+
-                        '李四被打败了.');
+            expect(fight_ctrl.fight_each_other(soldierZhangsan, ordinaryBeingLisi))
+                .toBe('张三出击\n' +
+                '李四出击\n' +
+                '张三出击\n' +
+                '李四出击\n' +
+                '战士张三被打败了.');
         });
     });
 

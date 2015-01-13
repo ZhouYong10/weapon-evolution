@@ -9,12 +9,12 @@ function Soldier(people,job,weapon,defense) {
 }
 
 Soldier.prototype = {
-    fight: function(people) {
-        var hurt_blood = people.reduce_blood(this.hurt());
+    fight: function(role) {
+        var hurt_blood = role.reduce_blood(this.hurt());
         return this.job + this.people.name + '用' + this.weapon.name +
-            '攻击了' + people.job + people.people.name + ',' +
-            people.people.name + '受到了' + hurt_blood + '点伤害,' +
-            people.people.name + '剩余生命：' + people.people.blood + '\n';
+            '攻击了' + role.job + role.people.name + ',' +
+            role.people.name + '受到了' + hurt_blood + '点伤害,' +
+            role.people.name + '剩余生命：' + role.people.blood + '\n';
     },
     reduce_blood:function(hurt) {
         var blood = this.people.blood;
@@ -23,6 +23,12 @@ Soldier.prototype = {
     },
     hurt: function() {
         return (this.people.hurt + this.weapon.hurt);
+    },
+    is_alive: function(){
+        if(this.people.blood > 0) {
+            return 'alive';
+        }
+        return this.job + this.people.name + '被打败了.';
     }
 };
 
