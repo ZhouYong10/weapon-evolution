@@ -4,6 +4,10 @@ var m = require('jsmockito').JsMockito;
 
 var People = require('../models/People');
 var fight_ctrl = require('../controllers/fight_ctrl');
+var Soldier = require('../models/roles/Soldier');
+var OrdinaryBeing = require('../models/roles/OrdinaryBeing');
+var Weapon = require('../models/weapons/Weapon');
+var Defense = require('../models/defenses/Defense');
 
 describe("weapon-evolution", function(){
     describe('people fight each other.',function() {
@@ -45,11 +49,18 @@ describe("weapon-evolution", function(){
     });
 
     describe('the method fight of people.',function() {
-        it('the blood should be reduce of people who was fighted.',function() {
-            var zhangsan = new People('张三', 10, 3);
-            var lisi = new People('李四', 10, 6);
-            expect(zhangsan.fight(lisi)).toBe('张三攻击了李四,李四受到了3点伤害,李四剩余生命：7\n');
-            expect(lisi.blood).toBe(7);
+
+        var soldierZhangsan, ordinaryBeingLisi;
+        beforeEach(function() {
+            soldierZhangsan = new Soldier(new People('张三', 10, 4),'战士',new Weapon('优质木棒',3),new Defense('护盾',2));
+            ordinaryBeingLisi = new OrdinaryBeing(new People('李四', 10, 3),'普通人');
+        });
+
+        it('soldier fight ordinary being.',function() {
+            expect(soldierZhangsan.fight(ordinaryBeingLisi)).toBe('战士张三用优质木棒攻击了普通人李四,李四受到了7点伤害,李四剩余生命：3\n');
+        });
+        it('ordinary being fight soldier.',function() {
+            expect(ordinaryBeingLisi.fight(soldierZhangsan)).toBe('普通人李四攻击了战士张三,张三受到了1点伤害,张三剩余生命：9\n');
         })
     });
 
