@@ -10,71 +10,62 @@ describe("weapon-evolution", function(){
 
        it('first fight people die.',function() {
            var zhangsan = new People('张三', 10, 3);
-           zhangsan.fight = function(people) {
-               people.blood -= this.hurt;
-               return '张三出击\n';
+           zhangsan.is_alive = function() {
+               return false;
+           };
+           zhangsan.fight = function() {
+               return '张三出击';
            };
            var lisi = new People('李四', 10, 5);
-           lisi.fight = function(people) {
-               people.blood -= this.hurt;
-               return '李四出击\n';
+           lisi.is_alive = function() {
+               return true;
            };
-           expect(fight_ctrl.fight_each_other(zhangsan, lisi)).toBe('张三出击\n'+
-                                                                       '李四出击\n'+
-                                                                       '张三出击\n'+
-                                                                       '李四出击\n'+
-                                                                       '张三被打败了.');
+           lisi.fight = function() {
+               return '李四出击';
+           };
+           expect(fight_ctrl.fight_each_other(zhangsan, lisi)).toBe('张三被打败了.');
        });
 
         it('second fight people die.', function () {
-            var zhangsan = new People('张三', 10, 6);
-            zhangsan.fight = function(people) {
-                people.blood -= this.hurt;
-                return '张三出击\n';
+            var zhangsan = new People('张三', 10, 5);
+            zhangsan.is_alive = function() {
+                return true;
             };
-            var lisi = new People('李四', 10, 5);
-            lisi.fight = function(people) {
-                people.blood -= this.hurt;
-                return '李四出击\n';
+            zhangsan.fight = function() {
+                return '张三出击';
             };
-            expect(fight_ctrl.fight_each_other(zhangsan, lisi)).toBe('张三出击\n'+
-                                                                        '李四出击\n'+
-                                                                        '张三出击\n'+
-                                                                        '李四被打败了.');
+            var lisi = new People('李四', 10, 3);
+            lisi.is_alive = function() {
+                return false;
+            };
+            lisi.fight = function() {
+                return '李四出击';
+            };
+            expect(fight_ctrl.fight_each_other(zhangsan, lisi)).toBe('李四被打败了.');
         });
-    });
-
-    describe('the method fight of people.',function() {
-        it('the blood should be reduce of people who was fighted.',function() {
-            var zhangsan = new People('张三', 10, 3);
-            var lisi = new People('李四', 10, 6);
-            expect(zhangsan.fight(lisi)).toBe('张三攻击了李四,李四受到了3点伤害,李四剩余生命：7\n');
-            expect(lisi.blood).toBe(7);
-        })
     });
 
     describe('the method is_alive of people.',function() {
-       it('people should be alive.',function() {
-           var zhangsan = new People('张三', 3, 2);
-           expect(zhangsan.is_alive()).toBe('alive');
-       });
-        it('people should be dead.', function () {
-            var lisi = new People('李四', 0, 4);
-            expect(lisi.is_alive()).toBe('李四被打败了.');
+
+        it('people should be die.',function() {
+            var people = new People('张三', 0, 3);
+            var people2 = new People('李四', -1, 4);
+            expect(people.is_alive()).toBe(false);
+            expect(people2.is_alive()).toBe(false);
+        });
+
+        it('people should be alive.',function() {
+            var people = new People('李四', 1, 2);
+            expect(people.is_alive()).toBe(true);
         })
     });
 
-    describe('the method all_alive of fight_ctrl.',function() {
-        var zhangsan = new People('张三', 10, 3);
-        var lisi = new People('李四', -2, 5);
-        var wangwu = new People('王五', 1, 3);
-
-        it('all people should be alive.',function() {
-            expect(fight_ctrl.all_alive(zhangsan, wangwu)).toBe('allAlive');
-        });
-
-        it('lisi should be dead.',function() {
-            expect(fight_ctrl.all_alive(zhangsan, lisi, wangwu)).toBe('李四被打败了.');
-        })
+    it('people should be fighting,the blood of who was fighted should be reduce.',function() {
+        var zhangsan = new People('张三', 10, 4);
+        var lisi = new People('李四', 20, 5);
+        zhangsan.fight(lisi);
+        lisi.fight(zhangsan);
+        expect(lisi.blood).toBe(16);
+        expect(zhangsan.blood).toBe(5);
     })
 });
