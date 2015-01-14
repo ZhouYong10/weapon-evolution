@@ -3,22 +3,15 @@
  */
 module.exports = {
     fight_each_other: function(player1,player2) {
-        var result = this.all_alive(player1, player2);
-        while(result == 'allAlive') {
-            player1.fight(player2);
-            player2.fight(player1);
-            result = this.all_alive(player1, player2);
-        }
-        return result;
-    },
-    all_alive: function() {
-        for(var key in arguments) {
-            var player = arguments[key];
-            var result = player.is_alive();
-            if(result != 'alive'){
-                return result;
+        while(true) {
+            if(!player1.is_alive()){
+                return player1.name + '被打败了.';
             }
+            player1.fight(player2);
+            if(!player2.is_alive()) {
+                return player2.name + '被打败了.';
+            }
+            player2.fight(player1);
         }
-        return 'allAlive';
     }
 };

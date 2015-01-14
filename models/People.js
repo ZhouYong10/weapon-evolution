@@ -8,14 +8,11 @@ function People(name,blood,hurt) {
 }
 
 People.prototype = {
-    fight: function(people) {
-        people.blood -= this.hurt;
-    },
     is_alive: function() {
-        if(this.blood > 0) {
-            return 'alive';
+        if(this.blood <= 0) {
+            return false;
         }
-        return this.name + '被打败了.';
+        return true;
     }
 };
 
