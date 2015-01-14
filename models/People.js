@@ -13,6 +13,9 @@ People.prototype = {
             return false;
         }
         return true;
+    },
+    fight: function(people) {
+        people.blood -= this.hurt;
     }
 };
 
