@@ -14,8 +14,14 @@ People.prototype = {
         }
         return true;
     },
-    fight: function(people) {
-        people.blood -= this.hurt;
+    fight: function(enemy) {
+        enemy.blood -= this.hurt;
+        return this.output_fight_details(enemy)
+    },
+    output_fight_details: function(enemy) {
+        return this.name + '攻击了' + enemy.name + ',' +
+            enemy.name + '受到了' + this.hurt + '点伤害,' +
+            enemy.name + '剩余生命:' + enemy.blood + '\n';
     }
 };
 
