@@ -45,16 +45,33 @@ describe("weapon-evolution", function(){
 
         describe('Test string concatenation.',function() {
             var player1, player2;
+            var count1, count2;
             beforeEach(function() {
+                count1 = 0; count2 = 0;
                 player1 = new People('张三', 10, 3);
-                player1.output_fight_details = function() {
+                player1.fight = function() {
+                    count2++;
                     return '张三出击\n';
                 };
+                player1.is_alive = function() {
+                    if(count1 == 2) {
+                        return false;
+                    }
+                    return true
+                };
                 player2 = new People('李四', 10, 5);
-                player2.output_fight_details = function() {
+                player2.fight = function() {
+                    count1++;
                     return '李四出击\n';
                 };
+                player2.is_alive = function() {
+                    if(count2 == 4) {
+                        return false;
+                    }
+                    return true;
+                };
             });
+
             it('zhangsan should be dead.',function() {
                 expect(fight_ctrl.fight_each_other(player1, player2))
                     .toBe('张三出击\n'+
@@ -65,8 +82,18 @@ describe("weapon-evolution", function(){
             });
 
             it('lisi should be dead.', function () {
-                player1.hurt = 6;
-                player2.hurt = 3;
+                player1.is_alive = function() {
+                    if(count1 == 3) {
+                        return false;
+                    }
+                    return true;
+                };
+                player2.is_alive = function() {
+                    if(count2 == 2) {
+                        return false;
+                    }
+                    return true;
+                };
                 expect(fight_ctrl.fight_each_other(player1, player2))
                     .toBe('张三出击\n'+
                             '李四出击\n'+
