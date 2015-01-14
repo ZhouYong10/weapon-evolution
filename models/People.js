@@ -1,10 +1,11 @@
 /**
  * Created by zhouyong on 15-1-13.
  */
-function People(name,blood,hurt) {
+function People(name,blood,hurt,role) {
     this.name = name;
     this.blood = blood;
     this.hurt = hurt;
+    this.role = role;
 }
 
 People.prototype = {
@@ -15,13 +16,22 @@ People.prototype = {
         return true;
     },
     fight: function(enemy) {
-        enemy.blood -= this.hurt;
+        enemy.reduce_blood(this.out_hurt());
         return this.output_fight_details(enemy)
     },
     output_fight_details: function(enemy) {
-        return this.name + '攻击了' + enemy.name + ',' +
-            enemy.name + '受到了' + this.hurt + '点伤害,' +
+        return this.role + this.name + '攻击了' + enemy.role + enemy.name + ',' +
+            enemy.name + '受到了' + enemy.get_hurt(this.out_hurt()) + '点伤害,' +
             enemy.name + '剩余生命:' + enemy.blood + '\n';
+    },
+    out_hurt: function() {
+      return this.hurt;
+    },
+    get_hurt: function(hurt) {
+      return hurt;
+    },
+    reduce_blood: function(hurt) {
+        this.blood -= hurt;
     }
 };
 

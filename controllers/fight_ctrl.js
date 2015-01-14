@@ -6,11 +6,13 @@ module.exports = {
         var message = '';
         while(true) {
             if(!player1.is_alive()){
-                return message += player1.name + '被打败了.';
+                message += player1.name + '被打败了.';
+                break;
             }
             message += player1.fight(player2);
-            if(!player2.is_alive()) {
-                return message += player2.name + '被打败了.';
+            if(!player2.is_alive() ) {
+                message += player2.name + '被打败了.';
+                break;
             }
             message += player2.fight(player1);
         }
