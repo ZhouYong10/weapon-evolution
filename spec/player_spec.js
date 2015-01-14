@@ -8,39 +8,71 @@ var fight_ctrl = require('../controllers/fight_ctrl');
 describe("weapon-evolution", function(){
     describe('people fight each other.',function() {
 
-       it('first fight people die.',function() {
-           var zhangsan = new People('张三', 10, 3);
-           zhangsan.fight = function(people) {
-               people.blood -= this.hurt;
-               return '张三出击\n';
-           };
-           var lisi = new People('李四', 10, 5);
-           lisi.fight = function(people) {
-                people.blood -= this.hurt;
-               return '李四出击\n';
-           };
-           expect(fight_ctrl.fight_each_other(zhangsan, lisi)).toBe('张三出击\n'+
-                                                                       '李四出击\n'+
-                                                                       '张三出击\n'+
-                                                                       '李四出击\n'+
-                                                                       '张三被打败了.');
-       });
+        describe('Test loop exit condition.',function() {
+            var player1, player2;
+            beforeEach(function() {
+                player1 = new People('张三', 2, 3);
+                player1.fight = function() {
+                    return '';
+                };
+                player2 = new People('李四', 3, 5);
+                player2.fight = function() {
+                    return '';
+                };
+            });
 
-        it('second fight people die.', function () {
-            var zhangsan = new People('张三', 10, 5);
-            zhangsan.fight = function(people) {
-                people.blood -= this.hurt;
-                return '张三出击\n';
-            };
-            var lisi = new People('李四', 10, 3);
-            lisi.fight = function(people) {
-                people.blood -= this.hurt;
-                return '李四出击\n';
-            };
-            expect(fight_ctrl.fight_each_other(zhangsan, lisi)).toBe('张三出击\n'+
-                                                                        '李四出击\n'+
-                                                                        '张三出击\n'+
-                                                                        '李四被打败了.');
+            it('Test loop exit condition,zhangsan should be dead.',function() {
+                player1.is_alive = function() {
+                    return false;
+                };
+                player2.is_alive = function() {
+                    return true;
+                };
+                expect(fight_ctrl.fight_each_other(player1, player2)).toBe('张三被打败了.');
+            });
+
+            it('Test loop exit condition,lisi should be dead.',function() {
+                player1.is_alive = function() {
+                    return true;
+                };
+                player2.is_alive = function() {
+                    return false;
+                };
+                expect(fight_ctrl.fight_each_other(player1, player2)).toBe('李四被打败了.');
+            });
+
+        });
+
+        describe('Test string concatenation.',function() {
+            var player1, player2;
+            beforeEach(function() {
+                player1 = new People('张三', 10, 3);
+                player1.output_fight_details = function() {
+                    return '张三出击\n';
+                };
+                player2 = new People('李四', 10, 5);
+                player2.output_fight_details = function() {
+                    return '李四出击\n';
+                };
+            });
+            it('zhangsan should be dead.',function() {
+                expect(fight_ctrl.fight_each_other(player1, player2))
+                    .toBe('张三出击\n'+
+                            '李四出击\n'+
+                            '张三出击\n'+
+                            '李四出击\n'+
+                            '张三被打败了.');
+            });
+
+            it('lisi should be dead.', function () {
+                player1.hurt = 6;
+                player2.hurt = 3;
+                expect(fight_ctrl.fight_each_other(player1, player2))
+                    .toBe('张三出击\n'+
+                            '李四出击\n'+
+                            '张三出击\n'+
+                            '李四被打败了.');
+            });
         });
     });
 
@@ -59,16 +91,14 @@ describe("weapon-evolution", function(){
         })
     });
 
-    it('people should be fighting,the blood of who was fighted should be reduce and output details.',function() {
+    it('the blood of who was fighted should be reduce.',function() {
         var zhangsan = new People('张三', 10, 4);
         var lisi = new People('李四', 20, 5);
         zhangsan.fight(lisi);
-        lisi.fight(zhangsan);
         expect(lisi.blood).toBe(16);
-        expect(zhangsan.blood).toBe(5);
     });
 
-    it('the method output_fight_details of people should be output details of fight.',function() {
+    it('the method output_fight_details of people should be output details of fighting.',function() {
         var zhangsan = new People('张三', 10, 4);
         var lisi = new People('李四', 20, 5);
         zhangsan.fight(lisi);
