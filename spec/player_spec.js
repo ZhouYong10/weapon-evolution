@@ -28,7 +28,8 @@ describe("weapon-evolution", function(){
                 player2.is_alive = function() {
                     return true;
                 };
-                expect(fight_ctrl.fight_each_other(player1, player2)).toBe('张三被打败了.');
+                expect(fight_ctrl.fight_each_other(player1, player2))
+                    .toBe('张三被打败了.');
             });
 
             it('Test loop exit condition,lisi should be dead.',function() {
@@ -38,7 +39,8 @@ describe("weapon-evolution", function(){
                 player2.is_alive = function() {
                     return false;
                 };
-                expect(fight_ctrl.fight_each_other(player1, player2)).toBe('李四被打败了.');
+                expect(fight_ctrl.fight_each_other(player1, player2))
+                    .toBe('李四被打败了.');
             });
 
         });
@@ -125,10 +127,12 @@ describe("weapon-evolution", function(){
         expect(lisi.blood).toBe(16);
     });
 
-    it('the method output_fight_details of people should be output details of fighting.',function() {
+    it('the method output_fight_details of people should be ' +
+        'output details of fighting.',function() {
         var zhangsan = new People('张三', 10, 4);
         var lisi = new People('李四', 20, 5);
         zhangsan.fight(lisi);
-        expect(zhangsan.output_fight_details(lisi)).toBe('张三攻击了李四,李四受到了4点伤害,李四剩余生命:16\n');
+        expect(zhangsan.output_fight_details(lisi))
+            .toBe('张三攻击了李四,李四受到了4点伤害,李四剩余生命:16\n');
     })
 });
