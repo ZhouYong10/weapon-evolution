@@ -2,25 +2,24 @@
  * Created by zhouyong on 15-1-14.
  */
 var People = require('../People');
+var Weapon = require('../weapons/Weapon');
+var Defense = require('../defenses/Defense');
 
 function Soldier(name,blood,hurt,role,weapon,defense) {
     People.call(this,name,blood,hurt,role);
-    this.weapon = weapon;
-    this.defense = defense;
+    this.weapon = weapon?weapon:new Weapon('',0);
+    this.defense = defense?defense:new Defense('',0);
 }
 
 Soldier.prototype = Object.create(People.prototype);
 Soldier.prototype.constructor = Soldier;
 
 Soldier.prototype.out_hurt = function() {
-    if(this.weapon) {
-        return this.hurt + this.weapon.hurt;
-    }
-    return this.hurt;
+    return this.hurt + this.weapon.hurt;
 };
 
 Soldier.prototype.get_hurt = function(hurt) {
-    var _hurt = this.defense?hurt - this.defense.value:hurt;
+    var _hurt = hurt - this.defense.value;
     return _hurt>0 ? _hurt : 0;
 };
 
@@ -29,7 +28,7 @@ Soldier.prototype.reduce_blood = function(hurt) {
 };
 
 Soldier.prototype.fight_say = function() {
-    return (this.weapon?'用'+this.weapon.name:'') + '攻击了';
+    return (this.weapon.name != '' ? '用'+this.weapon.name : '') + '攻击了';
 };
 
 module.exports = Soldier;
