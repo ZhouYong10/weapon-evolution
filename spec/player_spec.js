@@ -164,17 +164,4 @@ describe("weapon-evolution", function(){
             expect(ordinary1.fight(ordinary2))
                 .toBe('普通人张三攻击了普通人李四,李四受到了3点伤害,李四剩余生命:7\n'); });
     });
-
-    it('Should output details of the fighting.',function() {
-        var soldier = new Soldier('张三', 10, 4,'战士',
-            new Weapon('优质木棒',3),
-            new Defense('盾牌',2));
-        var ordinaryBeing = new People('李四', 10, 5,'普通人');
-        expect(soldier.fight(ordinaryBeing))
-            .toBe('战士张三用优质木棒攻击了普通人李四,李四受到了7点伤害,李四剩余生命:3\n');
-        expect(ordinaryBeing.fight(soldier))
-            .toBe('普通人李四攻击了战士张三,张三受到了3点伤害,张三剩余生命:7\n');
-        expect(ordinaryBeing.blood).toBe(3);
-        expect(soldier.blood).toBe(7);
-    });
 });
