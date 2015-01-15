@@ -20,9 +20,12 @@ People.prototype = {
         return this.output_fight_details(enemy)
     },
     output_fight_details: function(enemy) {
-        return this.role + this.name + '攻击了' + enemy.role + enemy.name + ',' +
+        return this.role + this.name + this.fight_say() + enemy.role + enemy.name + ',' +
             enemy.name + '受到了' + enemy.get_hurt(this.out_hurt()) + '点伤害,' +
             enemy.name + '剩余生命:' + enemy.blood + '\n';
+    },
+    fight_say: function() {
+      return '攻击了';
     },
     out_hurt: function() {
       return this.hurt;

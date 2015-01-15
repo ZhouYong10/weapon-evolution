@@ -28,11 +28,8 @@ Soldier.prototype.reduce_blood = function(hurt) {
     this.blood -= this.get_hurt(hurt);
 };
 
-Soldier.prototype.output_fight_details = function(enemy) {
-    return this.role + this.name + (this.weapon?'用'+this.weapon.name:'') + '攻击了' +
-        enemy.role + enemy.name + ',' + enemy.name + '受到了' +
-        enemy.get_hurt(this.out_hurt()) + '点伤害,' + enemy.name +
-        '剩余生命:' + enemy.blood + '\n';
+Soldier.prototype.fight_say = function() {
+    return (this.weapon?'用'+this.weapon.name:'') + '攻击了';
 };
 
 module.exports = Soldier;
