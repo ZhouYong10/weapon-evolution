@@ -7,8 +7,8 @@ var Defense = require('../defenses/Defense');
 
 function Soldier(name,blood,hurt,role,weapon,defense) {
     People.call(this,name,blood,hurt,role);
-    this.weapon = weapon?weapon:new Weapon('',0);
-    this.defense = defense?defense:new Defense('',0);
+    this.weapon = weapon?weapon:Weapon.noWeapon;
+    this.defense = defense?defense:Defense.noDefense;
 }
 
 Soldier.prototype = Object.create(People.prototype);
@@ -28,7 +28,7 @@ Soldier.prototype.reduce_blood = function(hurt) {
 };
 
 Soldier.prototype.fight_say = function() {
-    return (this.weapon.name != '' ? '用'+this.weapon.name : '') + '攻击了';
+    return this.weapon.say() + '攻击了';
 };
 
 module.exports = Soldier;

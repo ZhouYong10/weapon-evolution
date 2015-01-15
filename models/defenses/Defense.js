@@ -6,4 +6,8 @@ function Defense(name,value) {
     this.value = value;
 }
 
+Defense.noDefense = {
+    value: 0
+};
+
 module.exports = Defense;

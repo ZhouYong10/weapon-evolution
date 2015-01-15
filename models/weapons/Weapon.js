@@ -7,4 +7,17 @@ function Weapon(name,hurt) {
     this.hurt = hurt;
 }
 
+Weapon.prototype = {
+    say: function() {
+        return '用' + this.name;
+    }
+};
+
+Weapon.noWeapon = {
+    hurt: 0,
+    say: function() {
+        return '';
+    }
+};
+
 module.exports = Weapon;
