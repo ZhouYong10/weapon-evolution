@@ -10,10 +10,7 @@ function People(name,blood,hurt,role) {
 
 People.prototype = {
     is_alive: function() {
-        if(this.blood <= 0) {
-            return false;
-        }
-        return true;
+       return this.blood > 0 ? true : false;
     },
     fight: function(enemy) {
         enemy.reduce_blood(this.out_hurt());
